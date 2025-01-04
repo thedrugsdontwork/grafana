@@ -22,7 +22,7 @@ jobs:
     - name: Upload COS
       uses: zkqiang/tencent-cos-action@v0.1.0
       with:
-        args: delete -r -f /worker/docker/grafana/grafana_latest.tar && upload -r grafana_latest.tar /worker/docker/grafana/  
+        args: upload -r grafana_latest.tar /worker/docker/grafana/  
         secret_id: ${{ secrets.SECRET_ID }}
         secret_key: ${{ secrets.SECRET_KEY }}
         bucket: ${{ secrets.BUCKET }}
