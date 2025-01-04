@@ -17,7 +17,11 @@ jobs:
     - name: Build the Docker image
       run: docker build . --file Dockerfile --tag grafana:$(date +%s)
       
-    - name: Deploy 🚀
-      uses: JamesIves/github-pages-deploy-action@v4
+    - name: Upload COS
+      uses: zkqiang/tencent-cos-action@v0.1.0
       with:
-        folder: build # The folder the action should deploy.
+        args: delete -r -f /worker/docker/grafana/ && upload -r ./dist/ /worker/docker/grafana/  
+        secret_id: ${{ secrets.SECRET_ID }}
+        secret_key: ${{ secrets.SECRET_KEY }}
+        bucket: ${{ secrets.BUCKET }}
+        region: ${{ secrets.REGION }}
