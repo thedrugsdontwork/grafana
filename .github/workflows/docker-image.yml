@@ -13,11 +13,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-
+    - uses: actions/checkout@v4
+    - name: Build the Docker image
+      run: docker build . --file Dockerfile --tag grafana:$(date +%Y%m%d)
+    - name: Export docker 
+      run: docker save -o grafana_grafana_$(date +%Y%m%d)).tar grafana:$(date +%Y%m%d)
+      
     - name: Upload COS
       uses: zkqiang/tencent-cos-action@v0.1.0
       with:
-        args: delete -r -f /worker/docker/grafana/ && upload -r ./go.mod /worker/docker/grafana/  
+        args: delete -r -f /worker/docker/grafana/grafana_grafana_$(date +%Y%m%d)).tar && upload -r grafana_grafana_$(date +%Y%m%d)).tar /worker/docker/grafana/  
         secret_id: ${{ secrets.SECRET_ID }}
         secret_key: ${{ secrets.SECRET_KEY }}
         bucket: ${{ secrets.BUCKET }}
